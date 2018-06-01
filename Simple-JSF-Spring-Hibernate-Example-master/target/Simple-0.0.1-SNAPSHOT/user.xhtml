@@ -1,0 +1,120 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <f:event type="preRenderView" listener="#{userBean.verificarSesion()}" />
+
+    <style>
+        .opciones {
+            overflow:hidden;
+            text-align: center;
+            margin:auto;
+        }
+        .tabla {
+            display:inline-table;
+            padding:5px;
+            text-align: left;
+            height:40px;
+        }
+    </style>
+    <title>Lista Usuarios</title>
+</h:head>
+<h:body>
+
+    <h:form id="form" rendered="true">
+        <p:growl id="msgs" showDetail="true" />
+
+        <p:separator />
+        <h:panelGrid columns="2">
+            <p:commandButton action="#{userBean.logout}" value="Logout"/>
+            <p:outputLabel value="Usuario: #{userBean.usuario.name}" />
+        </h:panelGrid >
+        <p:separator />
+
+        <p:dataTable id="basicDT" var="user" value="#{userBean.users}" rendered="true">
+            <p:ajax event="cellEdit" update=":form:basicDT" />
+
+            <f:facet name="header">
+                Lista Usuarios
+            </f:facet>
+            <p:column headerText="Id">
+                <h:outputText value="#{user.id}" />
+            </p:column>
+            <p:column headerText="Name">
+                <h:outputText value="#{user.name}" />
+            </p:column>
+            <p:column headerText="Surname">
+                <h:outputText value="#{user.surname}" />
+            </p:column>
+
+            <p:column style="width:32px;text-align: center">
+                <p:commandButton update=":form:carDetail" oncomplete="PF('editarUserDialog').show()" icon="ui-icon-pencil">
+                    <f:setPropertyActionListener value="#{user}" target="#{userBean.selectedUser}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+
+
+        <p:dialog header="Editar Curso" widgetVar="editarUserDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" update="form">
+            <p:outputPanel id="carDetail" style="text-align:center;">
+                <p:panelGrid columns="2" rendered="#{not empty userBean.selectedUser}" columnClasses="label,value">
+                    <h:outputText value="Id:" />
+                    <h:outputText value="#{userBean.selectedUser.id}" />
+                    <h:outputText value="User:" />
+                    <h:inputText value="#{userBean.selectedUser.name}" />
+                    <h:outputText value="Pass:" />
+                    <h:inputText value="#{userBean.selectedUser.surname}"/>
+                </p:panelGrid>
+            </p:outputPanel>
+            <p:separator />
+
+            <p:commandButton value="Delete Row" id="btnDelete" actionListener="#{userBean.delete}" ajax="false" update="form:basicDT" oncomplete="handleComplete(xhr, status, args)"/>
+
+            <p:separator />
+
+            <p:commandButton value="Update Row" id="nonAjax" actionListener="#{userBean.update}"  ajax="false" update="form:basicDT" oncomplete="handleComplete(xhr, status, args)"/>
+
+            <p:separator />
+
+            <p:ajax event="close" update="form:basicDT"/>
+        </p:dialog>
+
+    </h:form>
+
+    <h:form id="form2">
+        <p:separator />
+
+        <p:commandButton value="Nuevo Usuario" update=":form:basicDT" oncomplete="PF('nuevoUsuarioDialog').show()" icon="ui-icon-plus" >
+        </p:commandButton>
+
+        <p:separator />
+
+
+        <p:dialog header="Agregar Usuario" widgetVar="nuevoUsuarioDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" update=":form:basicDT">
+            <div class="tabla">
+                <p:panel id="panel" header="Añadir Usuario">
+
+                    <h:panelGrid columns="2" cellpadding="20">
+
+                        <p:outputLabel for="name" value="Name"/>
+                        <p:inputText id="name" value="#{userBean.addUser.name}" required="true" label="name">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+
+                        <p:outputLabel for="surname" value="Surname"/>
+                        <p:inputText id="surname" value="#{userBean.addUser.surname}" required="true" label="surname">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+
+                        <p:commandButton value="Enviar" action="#{userBean.insertarUser}" ajax="false" update="form:basicDT" oncomplete="handleComplete(xhr, status, args)"/>
+
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+            <p:ajax event="close" update="form:basicDT"/>
+        </p:dialog>
+    </h:form>
+
+</h:body>
+</html>

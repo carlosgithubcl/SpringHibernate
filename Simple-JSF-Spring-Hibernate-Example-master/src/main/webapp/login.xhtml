@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <style>
+
+        .opciones {
+            overflow:hidden;
+            text-align: center;
+            margin:auto;
+        }
+        .tabla {
+            display:inline-table;
+            padding:5px;
+            text-align: left;
+            height:40px;
+        }
+    </style>
+    <title>Inicio</title>
+</h:head>
+<h:body>
+
+    <h:form id="formLogin">
+
+        <p:panel id="panelLogin" header="Acceso - Usuarios"
+                 style="position: absolute; width: 300px; top: 50%; left: 50%; margin-top: -150px; margin-left: -150px;">
+            <h:outputText value="Para acceder al sistema, ingrese su usuario y contraseña
+                              en los campos de abajo:" />
+            <p:panel id="panelSublogin" style="margin-top: 15px; margin-bottom: 10px;">
+
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel value="Usuario: " />
+                    <p:inputText id="idUsuario"
+                                 value="#{userBean.username}"
+                                 style="width: 130px;"/>
+                    <h:outputLabel value="Contraseña: " />
+                    <p:password id="idPassword"
+                                value="#{userBean.pass}"
+                                style="width: 130px;"/>
+
+                </h:panelGrid>
+
+                <p:commandButton  action="#{userBean.controladorLogin}" value="Login" ajax="false"/>
+
+            </p:panel>
+            <p:messages id="mensajes"/>
+        </p:panel>
+    </h:form>
+
+</h:body>
+</html>

@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <style>
+
+        .opciones {
+            overflow:hidden;
+            text-align: center;
+            margin:auto;
+        }
+        .tabla {
+            display:inline-table;
+            padding:5px;
+            text-align: left;
+            height:40px;
+        }
+    </style>
+    <title>Autenticación</title>
+</h:head>
+<h:body>
+
+    <h:form>
+        <div class="opciones" >
+            <div class="tabla">
+                <h2>Permisos Insuficientes, debes logear como Usuario</h2>
+                <p:commandButton action="login" value="Ir a Login" />
+            </div>
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>
